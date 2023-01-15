@@ -1,2 +1,2 @@
 # CarRentalService
-this repository connects with CarRentalApi repository
+the service web that connects with CarRentalApi repository and adds custom graphic
