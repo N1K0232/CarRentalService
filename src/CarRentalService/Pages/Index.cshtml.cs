@@ -18,11 +18,11 @@ public class IndexModel : PageModel
     public ListResult<Person> People { get; set; }
 
 
-    public async Task<IActionResult> OnGetAsync()
+    public async Task<IActionResult> OnGetAsync(int pageIndex = 0, int itemsPerPage = 10)
     {
         try
         {
-            People = await carRentalApiClient.GetPeopleAsync();
+            People = await carRentalApiClient.GetPeopleAsync(pageIndex, itemsPerPage);
             return Page();
         }
         catch (HttpRequestException)

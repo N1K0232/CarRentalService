@@ -12,6 +12,12 @@
                 <th>FirstName</th>
                 <th>LastName</th>
                 <th>DateOfBirth</th>
+                <th>Home Address</th>
+                <th>City</th>
+                <th>Postal Code</th>
+                <th>Country</th>
+                <th>Cellphone Number</th>
+                <th>Email Address</th>
             </tr>
             @foreach(var person in Model.People.Content)
             {
@@ -20,6 +26,12 @@
                     <th>@person.FirstName</th>
                     <th>@person.LastName</th>
                     <th>@person.DateOfBirth</th>
+                    <th>@person.HomeAddress</th>
+                    <th>@person.City</th>
+                    <th>@person.PostalCode</th>
+                    <th>@person.Country</th>
+                    <th>@person.CellphoneNumber</th>
+                    <th>@person.EmailAddress</th>
                 </tr>
             }
         </thead>
