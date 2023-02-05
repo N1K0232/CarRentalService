@@ -20,15 +20,7 @@ public class IndexModel : PageModel
 
     public async Task<IActionResult> OnGetAsync(int pageIndex = 0, int itemsPerPage = 10)
     {
-        try
-        {
-            People = await carRentalApiClient.GetPeopleAsync(pageIndex, itemsPerPage);
-            return Page();
-        }
-        catch (HttpRequestException)
-        {
-            People = null;
-            return Redirect("/Error");
-        }
+        People = await carRentalApiClient.GetPeopleAsync(pageIndex, itemsPerPage);
+        return People != null ? Page() : Redirect("/Error");
     }
 }
