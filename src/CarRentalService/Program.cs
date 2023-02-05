@@ -1,6 +1,10 @@
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages();
+builder.Services.AddCarRentalApiClient(options =>
+{
+    options.BaseAddress = builder.Configuration.GetValue<string>("AppSettings:BaseAddress");
+});
 
 var app = builder.Build();
 app.UseExceptionHandler("/Error");

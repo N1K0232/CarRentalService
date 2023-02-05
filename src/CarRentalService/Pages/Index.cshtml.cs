@@ -1,18 +1,34 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CarRentalApi.Shared.Common;
+using CarRentalApi.Shared.Models;
+using CarRentalService.Client;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace CarRentalService.Pages;
+
 public class IndexModel : PageModel
 {
-    private readonly ILogger<IndexModel> _logger;
+    private readonly ICarRentalApiClient carRentalApiClient;
 
-    public IndexModel(ILogger<IndexModel> logger)
+    public IndexModel(ICarRentalApiClient carRentalApiClient)
     {
-        _logger = logger;
+        this.carRentalApiClient = carRentalApiClient;
     }
 
-    public void OnGet()
-    {
+    public ListResult<Person> People { get; set; }
 
+
+    public async Task<IActionResult> OnGetAsync()
+    {
+        try
+        {
+            People = await carRentalApiClient.GetPeopleAsync();
+            return Page();
+        }
+        catch (HttpRequestException)
+        {
+            People = null;
+            return Redirect("/Error");
+        }
     }
 }
