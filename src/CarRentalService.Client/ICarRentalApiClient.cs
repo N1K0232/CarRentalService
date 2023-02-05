@@ -10,4 +10,6 @@ public interface ICarRentalApiClient : IDisposable
     Task<ListResult<Vehicle>> GetVehiclesAsync(int pageIndex, int itemsPerPage);
 
     Task<ListResult<Reservation>> GetReservationsAsync(int pageIndex, int itemsPerPage);
+
+    Task<IEnumerable<Image>> GetImagesAsync();
 }

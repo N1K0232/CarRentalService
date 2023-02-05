@@ -6,7 +6,8 @@ namespace CarRentalService.Client;
 
 public class CarRentalApiClient : ICarRentalApiClient
 {
-    private HttpClient httpClient;
+    private HttpClient httpClient = null;
+    private CancellationTokenSource cancellationTokenSource = null;
 
     public CarRentalApiClient(HttpClient httpClient)
     {
@@ -14,25 +15,90 @@ public class CarRentalApiClient : ICarRentalApiClient
     }
 
 
-    public Task<ListResult<Person>> GetPeopleAsync(int pageIndex, int itemsPerPage)
+    private CancellationToken CancellationToken
+    {
+        get
+        {
+            cancellationTokenSource ??= new CancellationTokenSource();
+            return cancellationTokenSource.Token;
+        }
+    }
+
+    public async Task<ListResult<Person>> GetPeopleAsync(int pageIndex, int itemsPerPage)
     {
         var resource = $"/api/v1/People/{pageIndex}/{itemsPerPage}";
-        return GetAsync<ListResult<Person>>(resource);
+
+        try
+        {
+            var people = await httpClient.GetFromJsonAsync<ListResult<Person>>(resource, CancellationToken);
+            return people;
+        }
+        catch (TaskCanceledException)
+        {
+            return null;
+        }
+        catch (HttpRequestException)
+        {
+            return null;
+        }
     }
 
-    public Task<ListResult<Vehicle>> GetVehiclesAsync(int pageIndex, int itemsPerPage)
+    public async Task<ListResult<Vehicle>> GetVehiclesAsync(int pageIndex, int itemsPerPage)
     {
         var resource = $"/api/v1/Vehicles/{pageIndex}/{itemsPerPage}";
-        return GetAsync<ListResult<Vehicle>>(resource);
+
+        try
+        {
+            var vehicles = await httpClient.GetFromJsonAsync<ListResult<Vehicle>>(resource, CancellationToken);
+            return vehicles;
+        }
+        catch (TaskCanceledException)
+        {
+            return null;
+        }
+        catch (HttpRequestException)
+        {
+            return null;
+        }
     }
 
-    public Task<ListResult<Reservation>> GetReservationsAsync(int pageIndex, int itemsPerPage)
+    public async Task<ListResult<Reservation>> GetReservationsAsync(int pageIndex, int itemsPerPage)
     {
         var resource = $"/api/v1/Reservations/{pageIndex}/{itemsPerPage}";
-        return GetAsync<ListResult<Reservation>>(resource);
+
+        try
+        {
+            var reservations = await httpClient.GetFromJsonAsync<ListResult<Reservation>>(resource, CancellationToken);
+            return reservations;
+        }
+        catch (TaskCanceledException)
+        {
+            return null;
+        }
+        catch (HttpRequestException)
+        {
+            return null;
+        }
     }
 
-    private Task<T> GetAsync<T>(string resource) => httpClient.GetFromJsonAsync<T>(resource);
+    public async Task<IEnumerable<Image>> GetImagesAsync()
+    {
+        var resource = $"/api/v1/Images";
+
+        try
+        {
+            var images = await httpClient.GetFromJsonAsync<IEnumerable<Image>>(resource, CancellationToken);
+            return images;
+        }
+        catch (TaskCanceledException)
+        {
+            return null;
+        }
+        catch (HttpRequestException)
+        {
+            return null;
+        }
+    }
 
 
     public void Dispose()
