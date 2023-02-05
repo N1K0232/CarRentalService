@@ -14,19 +14,19 @@ public class CarRentalApiClient : ICarRentalApiClient
     }
 
 
-    public Task<ListResult<Person>> GetPeopleAsync(int pageIndex = 0, int itemsPerPage = 10)
+    public Task<ListResult<Person>> GetPeopleAsync(int pageIndex, int itemsPerPage)
     {
         var resource = $"/api/v1/People/{pageIndex}/{itemsPerPage}";
         return GetAsync<ListResult<Person>>(resource);
     }
 
-    public Task<ListResult<Vehicle>> GetVehiclesAsync(int pageIndex = 0, int itemsPerPage = 10)
+    public Task<ListResult<Vehicle>> GetVehiclesAsync(int pageIndex, int itemsPerPage)
     {
         var resource = $"/api/v1/Vehicles/{pageIndex}/{itemsPerPage}";
         return GetAsync<ListResult<Vehicle>>(resource);
     }
 
-    public Task<ListResult<Reservation>> GetReservationsAsync(int pageIndex = 0, int itemsPerPage = 10)
+    public Task<ListResult<Reservation>> GetReservationsAsync(int pageIndex, int itemsPerPage)
     {
         var resource = $"/api/v1/Reservations/{pageIndex}/{itemsPerPage}";
         return GetAsync<ListResult<Reservation>>(resource);
